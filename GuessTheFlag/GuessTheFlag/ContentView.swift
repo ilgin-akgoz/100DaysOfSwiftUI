@@ -13,6 +13,12 @@ struct ContentView: View {
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
+    @State private var score = 0
+    @State private var endOfGame = false
+    @State private var finalAlert = "Game Over"
+    @State private var roundCount = 0
+    
+    var maxRound = 8
     
     var body: some View {
         ZStack {
@@ -59,7 +65,7 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: ???")
+                Text("Score: \(score)")
                     .foregroundColor(.white)
                     .font(.title.bold())
                 
@@ -70,23 +76,52 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            if scoreTitle == "Correct" {
+                Text("That's great!")
+            } else {
+                Text("Oops, that's not correct.")
+            }
+        }
+        
+        .alert(finalAlert, isPresented: $endOfGame) {
+            Button("Start Again", action: reset)
+        } message: {
+            if score >= 30 {
+                Text("That's a good score🥳")
+            } else {
+                Text("Hmm, your score could be better🥶")
+            }
         }
     }
     
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
+            score += 5
         } else {
             scoreTitle = "Wrong"
+            score -= 5
         }
         
         showingScore = true
     }
     
+    func reset() {
+        score = 0
+        roundCount = 0
+        askQuestion()
+    }
+    
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        
+        if(roundCount < maxRound) {
+            roundCount += 1
+        } else {
+           endOfGame = true
+        }
+        
     }
 }
 
