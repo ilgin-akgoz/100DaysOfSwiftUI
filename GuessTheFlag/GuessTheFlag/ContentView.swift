@@ -20,6 +20,17 @@ struct ContentView: View {
     
     var maxRound = 8
     
+    struct FlagImage: View {
+        var image: [String]
+        var number: Int
+        var body: some View {
+            Image(image[number])
+                .renderingMode(.original)
+                .clipShape(Capsule())
+                .shadow(radius: 5)
+        }
+    }
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -50,10 +61,7 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                            FlagImage(image: countries, number: number)
                         }
                     }
                 }
