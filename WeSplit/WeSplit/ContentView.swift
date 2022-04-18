@@ -59,7 +59,7 @@ struct ContentView: View {
                             Text($0, format: .percent)
                         }
                     }
-                    // .pickerStyle(.segmented)
+                   // .pickerStyle(.segmented)
                 } header: {
                     Text("How much tip do you want to leave?")
                 }
